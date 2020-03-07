@@ -62,15 +62,13 @@ boxplot(no_food$Tail.Flicks~no_food$Density,
         col = c("light blue", "orange"),
 )
 ```
-
 ```{r Experiment 2: Levene's Test}
 # Conduct Levene's test to check assumptions
 leveneTest(Tail.Flicks~Density, data = no_food)
 ```
-
 Assumptions from Levene's test were not met, Wilcox test run instead
 ```{r Experiment 2: T-test}
-# Conduct Welch Two Sample T-test
+# Conduct Wilcox Two Sample T-test
 wilcox.test(Tail.Flicks~Density, data = no_food)
 ```
 
@@ -85,14 +83,12 @@ boxplot(low_density$Tail.Flicks~low_density$Food,
         col = c("light blue", "orange"),
 )
 ```
-
 ```{r Experiment 3: Levene's Test}
 # Conduct Levene's test to check assumptions
 leveneTest(Tail.Flicks~Food, data = low_density)
 ```
-
 ```{r Experiment 3: T-test}
-# Conduct Welch Two Sample T-test
+# Conduct Wilcox Two Sample T-test
 wilcox.test(Tail.Flicks~Food, data = low_density)
 ```
 
@@ -107,13 +103,11 @@ boxplot(high_density$Tail.Flicks~high_density$Food,
         col = c("light blue", "orange"),
 )
 ```
-
 ```{r Experiment 4: Levene's Test}
 # Conduct Levene's test to check assumptions
 leveneTest(Tail.Flicks~Food, data = high_density)
 ```
-
 ```{r Experiment 4: T-test}
-# Conduct Welch Two Sample T-test
+# Conduct Wilcox Two Sample T-test
 wilcox.test(Tail.Flicks~Food, data = high_density)
 ```

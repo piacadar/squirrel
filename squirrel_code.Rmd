@@ -7,23 +7,19 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(car)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r Import Data, echo = FALSE}
+Import data set
+```{r Import Data}
 # Read dataset
+library(car)
 squirrel = read.csv('squirrel.csv')
 squirrel
 ```
 
+Split data into different categories for analysis
 ```{r Split Data}
-##Split data into categories
+# Split data into categories
 food <- squirrel[squirrel$Food == 'Yes',]
 no_food <- squirrel[squirrel$Food == 'No',]
 low_density <- squirrel[squirrel$Density == 'Low',]
@@ -35,8 +31,89 @@ high_density_no_food <- high_density[high_density$Food == 'No',]
 
 ```
 
-```{r Experiment 1, echo=FALSE}
-plot(pressure)
+Experiment 1: High Density with food vs. Low Density with food
+Boxplot was created and a Welch Two Sample T-test was conducted
+```{r Experiment 1: Boxplot}
+# Create boxplot
+boxplot(food$Tail.Flicks~food$Density,
+        main = "Tail Flick vs. Density in the presence of food",
+        xlab = "Density",
+        ylab = "Tail Flicks",
+        col = c("light blue", "orange"),
+)
+```
+```{r Experiment 1: Levene's Test}
+# Conduct Levene's test to check assumptions
+leveneTest(food$Tail.Flicks~food$Density)
+```
+```{r Experiment 1: T-test}
+# Conduct Welch Two Sample T-test
+t.test(food$Tail.Flicks~food$Density, paired = F, var.equal=F)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Experiment 2: High Density without food vs. Low Density without food
+Boxplot was created and a Wilcox was conducted
+```{r Experiment 2: Boxplot}
+# Create boxplot
+boxplot(no_food$Tail.Flicks~no_food$Density,
+        main = "Tail Flick vs. Density without the presence of food",
+        xlab = "Density",
+        ylab = "Tail Flicks",
+        col = c("light blue", "orange"),
+)
+```
+
+```{r Experiment 2: Levene's Test}
+# Conduct Levene's test to check assumptions
+leveneTest(Tail.Flicks~Density, data = no_food)
+```
+
+Assumptions from Levene's test were not met, Wilcox test run instead
+```{r Experiment 2: T-test}
+# Conduct Welch Two Sample T-test
+wilcox.test(Tail.Flicks~Density, data = no_food)
+```
+
+Experiment 3: Low Density with food vs. Low Density without food
+Boxplot was created and a Wilcox test was conducted
+```{r Experiment 3: Boxplot}
+# Create boxplot
+boxplot(low_density$Tail.Flicks~low_density$Food,
+        main = "Tail Flick vs. Food in low density areas",
+        xlab = "Food Present",
+        ylab = "Tail Flicks",
+        col = c("light blue", "orange"),
+)
+```
+
+```{r Experiment 3: Levene's Test}
+# Conduct Levene's test to check assumptions
+leveneTest(Tail.Flicks~Food, data = low_density)
+```
+
+```{r Experiment 3: T-test}
+# Conduct Welch Two Sample T-test
+wilcox.test(Tail.Flicks~Food, data = low_density)
+```
+
+Experiment 4: High Density with food vs. High Density without food
+Boxplot was created and a Wilcox test was conducted
+```{r Experiment 4: Boxplot}
+# Create boxplot
+boxplot(high_density$Tail.Flicks~high_density$Food,
+        main = "Tail Flick vs. Food in high density areas",
+        xlab = "Food Present",
+        ylab = "Tail Flicks",
+        col = c("light blue", "orange"),
+)
+```
+
+```{r Experiment 4: Levene's Test}
+# Conduct Levene's test to check assumptions
+leveneTest(Tail.Flicks~Food, data = high_density)
+```
+
+```{r Experiment 4: T-test}
+# Conduct Welch Two Sample T-test
+wilcox.test(Tail.Flicks~Food, data = high_density)
+```
